@@ -16,7 +16,7 @@ class CrawlProductsSpider(CrawlSpider):
     def parse_item(self, response):
         item = {}
 
-        item['title'] = response.xpath("//h3/text()").get()
+        item['title'] = response.xpath("//h3[@class='card-title']/text()").get()
         item['price'] = response.xpath("//div[@class='card-body']/h4/text()").get()
         item['description'] = response.xpath("//p[@class='card-text']/text()").get()
         item['image'] = response.urljoin(response.xpath("//img[@class='card-img-top img-fluid']/@src").get())
