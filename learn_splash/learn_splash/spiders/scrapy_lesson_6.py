@@ -28,13 +28,11 @@ class ScrapyLesson6Spider(scrapy.Spider):
         )
 
     def parse(self, response):
-        # print(response)
-        products = response.xpath("//div[@class='row']")
-        # print(products)
-        for product in products:
-            yield {
-                'image': response.urljoin(product.xpath("//img[@class='card-img-top img-fluid']/@src").get()),
-                'title': product.xpath("//div[@class='card-body']/h4[@class='card-title']/text()").get(),
-                'price': product.xpath("//div[@class='card-body']/h4[@class='card-price']/text()").get(),
-                'description': product.xpath("//div[@class='card-body']/p[@class='card-description']/text()").get()
-            }
+        product = response.xpath("//div[@class='row']")
+
+        yield {
+            'image': response.urljoin(product.xpath("//img[@class='card-img-top img-fluid']/@src").get()),
+            'title': product.xpath("//div[@class='card-body']/h4[@class='card-title']/text()").get(),
+            'price': product.xpath("//div[@class='card-body']/h4[@class='card-price']/text()").get(),
+            'description': product.xpath("//div[@class='card-body']/p[@class='card-description']/text()").get()
+        }
