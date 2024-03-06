@@ -1,4 +1,4 @@
-# Scrapy settings for scrapingclub project
+# Scrapy settings for learn_splash project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,22 +7,23 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'scrapingclub'
+BOT_NAME = 'learn_splash'
 
-SPIDER_MODULES = ['scrapingclub.spiders']
-NEWSPIDER_MODULE = 'scrapingclub.spiders'
+SPIDER_MODULES = ['learn_splash.spiders']
+NEWSPIDER_MODULE = 'learn_splash.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'scrapingclub (+http://www.yourdomain.com)'
+#USER_AGENT = 'learn_splash (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
-FEED_EXPORT_ENCODING = 'utf-8'
+# SPLASH_URL = 'http://192.168.59.103:8050'
+SPLASH_URL = 'http://localhost:8050'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 5
+#CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -46,15 +47,23 @@ CONCURRENT_REQUESTS = 5
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
-#    'scrapingclub.middlewares.ScrapingclubSpiderMiddleware': 543,
-#}
+SPIDER_MIDDLEWARES = {
+    # 'learn_splash.middlewares.LearnSplashSpiderMiddleware': 543,
+    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'scrapingclub.middlewares.ScrapingclubDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    # 'learn_splash.middlewares.LearnSplashDownloaderMiddleware': 543,
+    'scrapy_splash.SplashCookiesMiddleware': 723,
+    'scrapy_splash.SplashMiddleware': 725,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
+
+DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -65,7 +74,7 @@ CONCURRENT_REQUESTS = 5
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'scrapingclub.pipelines.ProductPipelineSQLite': 300,
+   'learn_splash.pipelines.LearnSplashPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

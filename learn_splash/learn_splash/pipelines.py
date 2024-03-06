@@ -8,19 +8,19 @@
 from itemadapter import ItemAdapter
 import sqlite3
 
-class ProductPipelineSQLite:
+class LearnSplashPipeline:
     def open_spider(self, spider):
-        self.connection = sqlite3.connect('products.db') # создаю базу данных
+        self.connection = sqlite3.connect('product_splash.db') # создаю базу данных
         self.cursor = self.connection.cursor() # переменная для обращения к базе данных
 
         # переменная с командой на создание таблицы
         create_query = '''
             CREATE TABLE IF NOT EXISTS product(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                image TEXT,
                 title TEXT,
                 price TEXT,
-                description TEXT,
-                image TEXT
+                description TEXT
                 )
         '''
 
@@ -36,10 +36,10 @@ class ProductPipelineSQLite:
         # переменная с командой внесения данных в таблицу
         insert_query = '''
             INSERT INTO product(
+                image,
                 title,
                 price,
-                description,
-                image
+                description
                 )
             VALUES(
                 ?,
@@ -50,10 +50,10 @@ class ProductPipelineSQLite:
         '''
 
         self.cursor.execute(insert_query, (
+                                            item.get('image'),
                                             item.get('title'),
                                             item.get('price'),
-                                            item.get('description'),
-                                            item.get('image')
+                                            item.get('description')
                                            )
                             )
         self.connection.commit()
